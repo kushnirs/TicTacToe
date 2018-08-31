@@ -6,7 +6,7 @@
 /*   By: sergee <sergee@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 18:59:16 by skushnir          #+#    #+#             */
-/*   Updated: 2018/08/31 14:02:29 by sergee           ###   ########.fr       */
+/*   Updated: 2018/08/31 19:56:26 by sergee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ public:
 	~Graphic();
 	SDL_Window	*getWin();
 	void	init_module();
-	void 	display_message(std::string const & module, int x, int y, int font);
+	void 	display_message(std::string const & module, int x, int y, int font, SDL_Color color);
 	Graphic & operator = (Graphic const & obj);
 
 	void	display_module();

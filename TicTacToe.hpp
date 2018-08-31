@@ -6,7 +6,7 @@
 /*   By: sergee <sergee@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 22:33:54 by sergee            #+#    #+#             */
-/*   Updated: 2018/08/31 16:31:39 by sergee           ###   ########.fr       */
+/*   Updated: 2018/08/31 18:48:37 by sergee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,9 @@ public:
 	void check_press(SDL_Event	*event);
 	void event_func(SDL_Event	*event);
 
-	void computer_player();
+	int		protect_func();
+	int		rand_func();
+	void	computer_player();
 };
 
 #endif

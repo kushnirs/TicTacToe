@@ -6,7 +6,7 @@
 /*   By: sergee <sergee@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 18:59:14 by skushnir          #+#    #+#             */
-/*   Updated: 2018/08/31 14:53:33 by sergee           ###   ########.fr       */
+/*   Updated: 2018/08/31 19:56:39 by sergee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	Graphic::draw_line(int a[2], int b[2], int color)
 	}
 }
 
-void Graphic::display_message(std::string const & module, int x, int y, int font)
+void Graphic::display_message(std::string const & module, int x, int y, int font, SDL_Color color)
 {
 	TTF_Font				*ttf;
 	SDL_Rect				dstrect;
@@ -63,8 +63,7 @@ void Graphic::display_message(std::string const & module, int x, int y, int font
 	ttf = TTF_OpenFont("ARIAL.TTF", font);
 	if (!ttf)
 		return;
-	param = TTF_RenderText_Blended(ttf, module.c_str(),
-		(SDL_Color){0, 0, 0, 0});
+	param = TTF_RenderText_Blended(ttf, module.c_str(), color);
 	dstrect.x = x; dstrect.y = y;  dstrect.h = 0; dstrect.w = 0;
 	SDL_BlitSurface(param, NULL, surface, &dstrect);
 	TTF_CloseFont(ttf);

@@ -6,7 +6,7 @@
 /*   By: sergee <sergee@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 22:33:40 by sergee            #+#    #+#             */
-/*   Updated: 2018/08/31 18:24:12 by sergee           ###   ########.fr       */
+/*   Updated: 2018/08/31 19:57:49 by sergee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ TicTacToe::TicTacToe() : x(300), y(300), sector(0), multiplayer(0), player(false
 			computer_player();
 		check_winner();
 		if (winner)
-			winner == 1 ? disp.display_message("Player 1(o) win", 80, 165, 30)
-				: disp.display_message("Player 2(x) win", 80, 165, 30);
+			winner == 1 ? disp.display_message("Player 1(o) win", 80, 165, 30, (SDL_Color){0, 0, 0, 0})
+				: disp.display_message("Player 2(x) win", 80, 165, 30, (SDL_Color){0, 0, 0, 0});
 		SDL_UpdateWindowSurface(disp.getWin());
 	}
 }
@@ -59,6 +59,63 @@ void	TicTacToe::check_winner()
 	data[2] && data[2] == data[4] && data[4] == data[6] ? winner = data[2] : 0;
 }
 
+
+
+int		TicTacToe::protect_func()
+{
+	int h[3] = {0,1,2};
+
+	int i = 0;
+	while (i < 3)
+	{
+		if (data[h[0]] + data[h[1]] + data[h[2]] == 2)
+			break;
+		else if (data[i] + data[i + 3] + data[i + 6] == 2)
+		{
+			h[0] = i;
+			h[1] = i + 3;
+			h[2] = i + 6;
+			break;
+		}
+		else if (data[0] + data[4] + data[8] == 2)
+		{
+			h[0] = 0;
+			h[1] = 4;
+			h[2] = 8;
+			break;
+		}
+		else if (data[2] + data[4] + data[6] == 2)
+		{
+			h[0] = 2;
+			h[1] = 4;
+			h[2] = 6;
+			break;
+		}
+
+		h[0] += 3;
+		h[1] += 3;
+		h[2] += 3;
+		i++;
+	}
+
+	if (i < 3)
+		for (int it = 0; it < 3; it++)
+			if (!data[h[it]])
+				return (h[it]);
+	return (-1);
+}
+
+int 	TicTacToe::rand_func()
+{
+	std::vector<int> tmp;
+	for (int i = 0; i < 9; i++)
+		if (!data[i])
+			tmp.push_back(i);
+	if (!tmp.empty())
+		return( tmp[rand() % tmp.size()]);
+	return -1;
+}
+
 void TicTacToe::computer_player()
 {
 	player = false;
@@ -66,37 +123,40 @@ void TicTacToe::computer_player()
 					{0,100},{100,100},{200,100},
 					{0,200},{100,200},{200,200}
 				};
-	if (!data[4])
+	int it = protect_func();
+	if (it > 0)
 	{
-		disp.display_message("x", arr[4][0] + 30, arr[4][1] + 45, 80);
-		data[4] = 2;
+		printf("it = %d\n", it);
+		data[it] = 3;
+		disp.display_message("x", arr[it][0] + 30, arr[it][1] + 45, 80, (SDL_Color){0, 0, 0, 0});
 	}
-	else if (data[4] == 2)
+	else if (!data[4])
+	{
+		disp.display_message("x", arr[4][0] + 30, arr[4][1] + 45, 80, (SDL_Color){0, 0, 0, 0});
+		data[4] = 3;
+	}
+	else if (data[4] == 2 || data[4] == 1)
 	{
 		for (int i = 0; i < 9; i += 2)
 		{
 			if (!data[i])
 			{
-				data[i] = 2;
-				disp.display_message("x", arr[i][0] + 30, arr[i][1] + 45, 80);
+				data[i] = 3;
+				disp.display_message("x", arr[i][0] + 30, arr[i][1] + 45, 80, (SDL_Color){0, 0, 0, 0});
 				return;
 			}
 		}
+		int i = rand_func();
+		if (i != -1) {
+			data[i] = 2;
+			disp.display_message("x", arr[i][0] + 30, arr[i][1] + 45, 80, (SDL_Color){0, 0, 0, 0}); }
 	}
 	else
 	{
-		std::vector<int> tmp;
-		for (int i = 0; i < 9; i++)
-			if (!data[i])
-				tmp.push_back(i);
-		if (!tmp.empty())
-		{
-			printf("lox\n");
-			int i = rand() % tmp.size();
-			data[tmp[i]] = 2;
-			disp.display_message("x", arr[tmp[i]][0] + 30, arr[tmp[i]][1] + 45, 80);
-			return;
-		}
+		int i = rand_func();
+		if (i != -1) {
+			data[i] = 3;
+			disp.display_message("x", arr[i][0] + 30, arr[i][1] + 45, 80, (SDL_Color){0, 0, 0, 0}); }
 	}
 
 }
@@ -114,9 +174,9 @@ void TicTacToe::new_game()
 	disp.draw_line((int[2]){x * 0.66, x * 0.66}, (int[2]){45, y + 45}, 0);
 	disp.draw_line((int[2]){0, x}, (int[2]){45,45}, 0);
 	disp.draw_button(40, 10, 100, 30, 0x079AB7);
-	disp.display_message("singleplayer", 47, 15, 17);
+	disp.display_message("singleplayer", 47, 15, 17, (SDL_Color){0, 0, 0, 0});
 	disp.draw_button(160, 10, 100, 30, 0x079AB7);
-	disp.display_message("multiplayer", 170, 15, 17);
+	disp.display_message("multiplayer", 170, 15, 17, (SDL_Color){0, 0, 0, 0});
 }
 
 void TicTacToe::check_sector(int x_, int y_)
@@ -142,31 +202,25 @@ void TicTacToe::check_player_move(SDL_Event	*event)
 	if (data[sector] || !multiplayer)
 		return;
 	if (!player)
-		disp.display_message("o", sector_pos[0] + 27, sector_pos[1], 80);
+		disp.display_message("o", sector_pos[0] + 27, sector_pos[1], 80, (SDL_Color){0, 0, 0, 0});
 	else
 		if (multiplayer == 2)
-			disp.display_message("x", sector_pos[0] + 30, sector_pos[1], 80);
-	data[sector] = !player ? 1 : 2;
+			disp.display_message("x", sector_pos[0] + 30, sector_pos[1], 80, (SDL_Color){0, 0, 0, 0});
+	data[sector] = !player ? 1 : 3;
 	player = !player ? true : false;
 }
 
 void TicTacToe::check_press(SDL_Event	*event)
 {
-	for (int i = 0; i < 9; i++)
-	{
-		if (!(i % 3))
-			printf("\n");
-		printf("%d ", data[i]);
-	}
-	printf("\n");
-	// if (winner)
-	// 	return new_game();
+	if (winner)
+		return new_game();
 	 if (event->button.x >= 40 && event->button.x <= 140 && event->button.y >= 10 && event->button.y <= 40)
 	{
 	 	disp.draw_button(40, 10, 100, 30, 0x056375);
 		SDL_UpdateWindowSurface(disp.getWin());
 		usleep(20000);
 	 	new_game();
+		disp.display_message("singleplayer", 47, 15, 17, (SDL_Color){252, 9, 9, 0});
 	 	multiplayer = 1;
 	}
 	else if (event->button.x >= 160 && event->button.x <= 260 && event->button.y >= 10 && event->button.y <= 40)
@@ -175,6 +229,7 @@ void TicTacToe::check_press(SDL_Event	*event)
 		SDL_UpdateWindowSurface(disp.getWin());
 		usleep(20000);
 	 	new_game();
+		disp.display_message("multiplayer", 170, 15, 17, (SDL_Color){252, 9, 9, 0});
 	 	multiplayer = 2;
 	}
 	else if (event->button.y >= 45)
