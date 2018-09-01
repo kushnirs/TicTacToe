@@ -6,7 +6,7 @@
 /*   By: sergee <sergee@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 22:33:40 by sergee            #+#    #+#             */
-/*   Updated: 2018/09/01 12:57:58 by sergee           ###   ########.fr       */
+/*   Updated: 2018/09/01 13:10:08 by sergee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int		TicTacToe::protect_func()
 	int i = 0;
 	while (i < 3)
 	{
+		printf("lox %d \n", data[h[0]] + data[h[1]] + data[h[2]]);
 		if (data[h[0]] + data[h[1]] + data[h[2]] == 2 ||
 			data[h[0]] + data[h[1]] + data[h[2]] == 6)
 			break;
@@ -128,8 +129,9 @@ void TicTacToe::computer_player()
 					{0,200},{100,200},{200,200}
 				};
 	int it = protect_func();
-	if (it > 0)
+	if (it >= 0)
 	{
+		printf("it = %d\n", it);
 		data[it] = 3;
 		disp.display_message("x", arr[it][0] + 30, arr[it][1] + 45, 80, (SDL_Color){0, 0, 0, 0});
 	}
