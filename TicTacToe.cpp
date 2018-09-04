@@ -6,7 +6,7 @@
 /*   By: sergee <sergee@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/30 22:33:40 by sergee            #+#    #+#             */
-/*   Updated: 2018/09/01 13:12:24 by sergee           ###   ########.fr       */
+/*   Updated: 2018/09/04 17:46:09 by sergee           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ TicTacToe::TicTacToe() : x(300), y(300), sector(0), multiplayer(0), player(false
 			computer_player();
 		check_winner();
 		if (winner)
-			winner == 1 ? disp.display_message("Player 1(o) win", 80, 165, 30, (SDL_Color){0, 0, 0, 0})
-				: disp.display_message("Player 2(x) win", 80, 165, 30, (SDL_Color){0, 0, 0, 0});
+			winner == 1 ? disp.display_message("Player 1(o) win", 60, 165, 30, (SDL_Color){255, 9, 9, 0})
+				: disp.display_message("Player 2(x) win", 60, 165, 30, (SDL_Color){255, 9, 9, 0});
 		SDL_UpdateWindowSurface(disp.getWin());
 	}
 }
